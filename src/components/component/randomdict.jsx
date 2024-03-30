@@ -10,6 +10,8 @@ import axios from 'axios';
 export function Randomdict() {
   const[words, setWords] = useState();
   const[meaning, setMeaning] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
 
   // useEffect(() => {
   //   fetchWords();
@@ -17,24 +19,31 @@ export function Randomdict() {
 
   const fetchWords = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(`https://api.api-ninjas.com/v1/randomword`, {
       headers: { 'X-Api-Key':'GhXZgWLgKz9iHc15xCpabQ==pGeCPZZNr733nNGv'},
     });
+      setIsLoading(false);
       setWords(response.data.word);
     }
     catch {
+      setIsLoading(false);
       console.error("error", error);
     }
   }
 
   const fetchMeaning = async () => {
     try{
+      setIsLoading(true);
       const response = await axios.get(`https://api.api-ninjas.com/v1/dictionary?word=${words}`, {
         headers: { 'X-Api-Key':'GhXZgWLgKz9iHc15xCpabQ==pGeCPZZNr733nNGv'},
+
     });
+    setIsLoading(false);
     setMeaning(response.data.definition);
   }
     catch {
+      setIsLoading(false);
       console.error("error", error);
     }
   }
@@ -67,9 +76,13 @@ export function Randomdict() {
             <CardContent className="flex justify-center items-center p-12">
             <div className="flex flex-col items-center">
               <Button onClick={fetchMeaning} className="w-full md:w-auto mb-4">Get Meaning</Button>
+              {isLoading ? (
+                <p>Loading...</p>  // Replace this with your preloader
+               ) : (
               <p className="text-center">
                 <span className="font-bold">{meaning}</span>
               </p>
+               )}
             </div>
             </CardContent>
           </Card>
