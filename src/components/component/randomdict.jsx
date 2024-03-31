@@ -10,7 +10,11 @@ import axios from 'axios';
 export function Randomdict() {
   const[words, setWords] = useState();
   const[meaning, setMeaning] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  const [isFetchingWords, setIsFetchingWords] = useState(false);
+  const [isFetchingMeaning, setIsFetchingMeaning] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
 
 
   // useEffect(() => {
@@ -19,34 +23,40 @@ export function Randomdict() {
 
   const fetchWords = async () => {
     try {
-      setIsLoading(true);
+      setIsFetchingWords(true);
       const response = await axios.get(`https://api.api-ninjas.com/v1/randomword`, {
       headers: { 'X-Api-Key':'GhXZgWLgKz9iHc15xCpabQ==pGeCPZZNr733nNGv'},
     });
-      setIsLoading(false);
+      setIsFetchingWords(false);
       setWords(response.data.word);
     }
     catch {
-      setIsLoading(false);
+      setIsFetchingWords(false);
       console.error("error", error);
     }
   }
 
   const fetchMeaning = async () => {
     try{
-      setIsLoading(true);
+      setIsFetchingMeaning(true);
       const response = await axios.get(`https://api.api-ninjas.com/v1/dictionary?word=${words}`, {
         headers: { 'X-Api-Key':'GhXZgWLgKz9iHc15xCpabQ==pGeCPZZNr733nNGv'},
 
     });
-    setIsLoading(false);
-    setMeaning(response.data.definition);
+      setIsFetchingMeaning(false);
+      if (response.data.valid === false) {
+        setErrorMessage("Sorry We Couldn't Find The Meaning Of This Word");
+      }
+      else {
+        setErrorMessage(null);
+        setMeaning(response.data.definition);
+      }
   }
     catch {
-      setIsLoading(false);
-      console.error("error", error);
+      setIsFetchingMeaning(false);
     }
   }
+
 
   return (
     <div className="flex flex-col items-center gap-4 py-6 w-full">
@@ -65,7 +75,11 @@ export function Randomdict() {
               <CardDescription>Randomly generated keyword.</CardDescription>
             </CardHeader>
             <CardContent className="text-center">
+            { isFetchingWords ? (
+              <p>Loading...</p>  // Replace this with your preloader
+            ) : (
               <p className="text-4xl font-bold">{words}</p>
+            )}
             </CardContent>
           </Card>
           <Card>
@@ -76,9 +90,11 @@ export function Randomdict() {
             <CardContent className="flex justify-center items-center p-12">
             <div className="flex flex-col items-center">
               <Button onClick={fetchMeaning} className="w-full md:w-auto mb-4">Get Meaning</Button>
-              {isLoading ? (
+              {isFetchingMeaning ? (
                 <p>Loading...</p>  // Replace this with your preloader
-               ) : (
+               ) : errorMessage ? (
+                <p>{errorMessage}</p>
+              ) : (
               <p className="text-center">
                 <span className="font-bold">{meaning}</span>
               </p>
