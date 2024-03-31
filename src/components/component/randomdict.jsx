@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { useState } from 'react';
 import axios from 'axios';
+import Footer from "./footer";
 // import { useEffect } from 'react';
 
 
