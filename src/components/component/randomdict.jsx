@@ -44,7 +44,10 @@ export function Randomdict() {
 
     });
       setIsFetchingMeaning(false);
-      if (response.data.valid === false) {
+      if (words == null) {
+        setErrorMessage("Please Generate Random Word First");
+      }
+      else if (response.data.valid === false) {
         setErrorMessage("Sorry We Couldn't Find The Meaning Of This Word");
       }
       else {
