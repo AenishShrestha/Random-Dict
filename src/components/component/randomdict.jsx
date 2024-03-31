@@ -61,18 +61,18 @@ export function Randomdict() {
   return (
     <div className="flex flex-col items-center gap-4 py-6 w-full">
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-3xl font-bold tracking-tight">Keyword Generator</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Random Word Generator</h1>
         <p className="text-gray-500 dark:text-gray-400">
-          Click the button to generate a random keyword and see its meaning.
+          Click the button to generate a random word and see its meaning.
         </p>
       </div>
-      <Button onClick={fetchWords} className="w-full md:w-auto">Generate Keyword</Button>
+      <Button onClick={fetchWords} className="w-full md:w-auto">Generate Random Word</Button>
       <div className="flex flex-col items-center gap-4 w-full md:flex-row md:gap-8">
         <div className="flex flex-col gap-2 w-full md:grid md:grid-cols-2 md:gap-4">
           <Card>
             <CardHeader>
-              <CardTitle>Keyword</CardTitle>
-              <CardDescription>Randomly generated keyword.</CardDescription>
+              <CardTitle>Generated Word</CardTitle>
+              <CardDescription>Randomly generated word.</CardDescription>
             </CardHeader>
             <CardContent className="text-center">
             { isFetchingWords ? (
@@ -85,7 +85,7 @@ export function Randomdict() {
           <Card>
             <CardHeader>
               <CardTitle>Meaning</CardTitle>
-              <CardDescription>The meaning of the generated keyword.</CardDescription>
+              <CardDescription>The meaning of the generated word.</CardDescription>
             </CardHeader>
             <CardContent className="flex justify-center items-center p-12">
             <div className="flex flex-col items-center">
